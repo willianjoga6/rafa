@@ -54,6 +54,9 @@ public class PizzaService implements PizzaInterface {
 
     @Override
     public PizzaEntity Atualizar (PizzaDto pizzaDto, Long Id){
+        if(!pizzaRepository.existsById(Id)){
+            throw new NoResultException(String.format("Pizza de código %d não encontrado", Id));
+        }
 
         PizzaEntity pizza = new PizzaEntity(pizzaDto.Nome(), pizzaDto.tamanhoDto().name(), pizzaDto.Preco());
 
@@ -61,7 +64,6 @@ public class PizzaService implements PizzaInterface {
         PizzaXIngredientesCadastrado.forEach(f -> {
             pizzaIngredientesRepository.deleteById(f.getId());
                 }
-
         );
 
         var atualizarPizza = save(pizza);
@@ -72,5 +74,20 @@ public class PizzaService implements PizzaInterface {
         });
 
         return atualizarPizza;
+    }
+
+    @Override
+    public void DeletarPizza(Long Id){
+        if(!pizzaRepository.existsById(Id)){
+            throw new NoResultException(String.format("Pizza de código %d não encontrado", Id));
+        }
+
+        var PizzaXIngredientesCadastrado = pizzaIngredientesRepository.findByIdPizza(Id);
+        PizzaXIngredientesCadastrado.forEach(f -> {
+                    pizzaIngredientesRepository.deleteById(f.getId());
+                }
+        );
+
+        pizzaRepository.deleteById(Id);
     }
 }

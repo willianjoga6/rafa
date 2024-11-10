@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("Pizza")
 
-public class ControllerPizza {
+public class PizzaController {
 
     PizzaService pizzaService;
 
-    public ControllerPizza(PizzaService pizzaService) {
+    public PizzaController(PizzaService pizzaService) {
         this.pizzaService = pizzaService;
     }
 
@@ -35,5 +35,11 @@ public class ControllerPizza {
     public void AtualizarPizza(Long Id, @RequestBody PizzaDto pizzaDto){
 
         var atualizarPizza = pizzaService.Atualizar(pizzaDto, Id);
+    }
+
+    @DeleteMapping
+    public void DeletarPizza(Long Id){
+
+        pizzaService.DeletarPizza(Id);
     }
 }

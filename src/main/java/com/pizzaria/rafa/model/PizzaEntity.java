@@ -29,6 +29,9 @@ public class PizzaEntity {
         Preco = preco;
     }
 
+    public PizzaEntity() {
+    }
+
     public long getId() {
         return Id;
     }
